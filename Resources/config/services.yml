@@ -1,0 +1,5 @@
+services:
+    alahtarin.form.type.select2:
+        class: Alahtarin\Select2Bundle\Form\Type\Select2Type
+        tags:
+            - {name: form.type, alias: select2}

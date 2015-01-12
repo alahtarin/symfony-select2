@@ -1,0 +1,43 @@
+{% block select2_widget %}
+    {% set field = field|default('label') %}
+    <input type="hidden" name="{{ full_name }}" value="{{ value.id|default('') }}">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("[name='{{ full_name }}").select2({
+                placeholder: "{{ 'select an option'|trans }}",
+                allowClear: {{ required ? 'false' : 'true' }},
+                ajax: {
+                    {% if form.parent.vars.select2 is defined %}
+                    {% if form.parent.vars.select2[name].url is defined  %}
+                    {% set url = form.parent.vars.select2[name].url  %}
+                    {% endif %}
+                    {% endif %}
+                    url     : '{{ url }}',
+                    dataType: 'json',
+                    quietMillis: 200,
+                    data: function (term, page) {
+                        return {
+                            q: term
+                        };
+                    },
+                    results: function (data, page, query) {
+                        return {
+                            results: data
+                        };
+                    }
+                },
+                formatResult: function (ob, container, query) {
+                    return ob.{{ field }}
+                },
+                formatSelection: function(ob, container) {
+                    return ob.{{ field }}
+                },
+                {% if value.id is defined %}
+                initSelection: function(el, cb) {
+                    cb({id: "{{ value.id }}", {{ field }}: "{{ value.text }}" })
+        }
+        {% endif %}
+        });
+        });
+    </script>
+{% endblock %}

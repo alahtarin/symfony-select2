@@ -1,0 +1,30 @@
+{
+    "name" : "alahtarin/symfony-select2",
+    "description" : "Symfony Select2 Bundle",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "alahtarin",
+        "email" : "alex.lahtarin@gmail.com"
+    }],
+    "keywords" : [
+        "select2 bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Alahtarin\\Select2Bundle" : ""
+        }
+    },
+    "target-dir" : "Alahtarin/Select2Bundle",
+    "repositories" : [{
+    }],
+    "extra" : {
+        "branch-alias" : {
+            "dev-master" : "dev"
+        }
+    }
+}
