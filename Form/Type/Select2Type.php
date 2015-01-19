@@ -58,6 +58,7 @@ class Select2Type extends AbstractType
             'list_data' => $options['list_data'],
             'multiple' => $options['multiple'],
             'allow_add' => $options['allow_add'],
+            'dropdown_class' => $options['dropdown_class'],
         ]);
     }
 
@@ -75,6 +76,7 @@ class Select2Type extends AbstractType
             'multiple' => false,
             'allow_add' => false,
             'class' => null,
+            'dropdown_class' => false
         ));
     }
 

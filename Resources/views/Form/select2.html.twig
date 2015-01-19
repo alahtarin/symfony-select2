@@ -37,6 +37,9 @@
                         return { id: term, {{ field }}: term };
                     },
                 {% endif %}
+                {% if dropdown_class %}
+                    dropdownCssClass: "{{ dropdown_class }}",
+                {% endif %}
                 formatResult: function (ob, container, query) {
                     return ob.{{ field }}
                 },
