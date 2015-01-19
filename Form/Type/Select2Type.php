@@ -37,7 +37,7 @@ class Select2Type extends AbstractType
         }
 
         $modelTransformer = new Select2ModelTransformer();
-        $viewTransformer = new Select2ViewTransformer($options['repository'], $options['field'], $options['multiple']);
+        $viewTransformer = new Select2ViewTransformer($options['repository'], $options);
 
         $builder->addModelTransformer($modelTransformer);
         $builder->addViewTransformer($viewTransformer);
@@ -57,6 +57,7 @@ class Select2Type extends AbstractType
             'url' => $options['url'],
             'list_data' => $options['list_data'],
             'multiple' => $options['multiple'],
+            'allow_add' => $options['allow_add'],
         ]);
     }
 
@@ -71,7 +72,9 @@ class Select2Type extends AbstractType
             'field' => 'label',
             'url' => null,
             'list_data' => null,
-            'multiple' => false
+            'multiple' => false,
+            'allow_add' => false,
+            'class' => null,
         ));
     }
 

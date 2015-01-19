@@ -1,7 +1,7 @@
 {% block select2_widget %}
     {% set field = field|default('label') %}
 
-    <input type="hidden" name="{{ full_name }}" class="{{ class|default('') }}" value="{{ multiple ? value|pluck('id')|join(',') : value.id|default('') }}">
+    <input type="hidden" name="{{ full_name }}" class="{{ class|default('') }}" value="{{ multiple ? value|default([])|pluck('id')|join(',') : value.id|default('') }}">
     <script type="text/javascript">
         $(document).ready(function() {
             $("[name='{{ full_name }}").select2({
@@ -28,11 +28,15 @@
                             };
                         }
                     },
-                {% endif %}
-                {% if data %}
-                    data: {{ list_data|json_encode|raw }},
+                {% else %}
+                    data: {{ list_data|default([])|json_encode|raw }},
                 {% endif %}
                 multiple: {{ multiple ? 'true' : 'false' }},
+                {% if allow_add %}
+                    createSearchChoice: function (term) {
+                        return { id: term, {{ field }}: term };
+                    },
+                {% endif %}
                 formatResult: function (ob, container, query) {
                     return ob.{{ field }}
                 },

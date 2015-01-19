@@ -3,7 +3,9 @@
 namespace Alahtarin\Select2Bundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Z\Bundle\ApiBundle\Document\Brand;
 
 /**
  * Class Select2Transformer
@@ -17,25 +19,20 @@ class Select2ViewTransformer implements DataTransformerInterface
     protected $repository;
 
     /**
-     * @var string
+     * @var object
      */
-    protected $field;
+    protected $opts;
 
     /**
-     * @var boolean
+     * @param object $repository
+     * @param object $opts
      */
-    protected $multiple;
-
-    /**
-     * @param object  $repository
-     * @param string  $field
-     * @param boolean $multiple
-     */
-    public function __construct($repository, $field, $multiple)
+    public function __construct($repository, $opts)
     {
         $this->repository = $repository;
-        $this->field = $field;
-        $this->multiple = $multiple;
+        $this->opts = $opts;
+
+        $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -47,23 +44,16 @@ class Select2ViewTransformer implements DataTransformerInterface
             return null;
         }
 
-        $accessor = PropertyAccess::createPropertyAccessor();
-
         if (is_array($object)) {
             $return = [];
             foreach ($object as $item) {
-                $return[] = [
-                    'id' => $accessor->getValue($item, 'id'),
-                    $this->field => $accessor->getValue($item, $this->field)];
+                $return[] = $this->toViewData($item);
             }
 
             return $return;
         }
 
-        return [
-            'id' => $accessor->getValue($object, 'id'),
-            $this->field => $accessor->getValue($object, $this->field)
-        ];
+        return $this->toViewData($object);
     }
 
     /**
@@ -75,17 +65,49 @@ class Select2ViewTransformer implements DataTransformerInterface
             return null;
         }
 
-        if ($this->multiple) {
+        if ($this->opts['multiple']) {
             $ids = explode(',', $string);
             $return = [];
 
             foreach ($ids as $id) {
-                $return[] = $this->repository->get($id);
+                $return[] = $this->toNormData($id);
             }
 
             return $return;
         } else {
-            return $this->repository->get($string);
+            return $this->repository->$this->toNormData($string);
         }
+    }
+
+    /**
+     * @param object $item
+     *
+     * @return array
+     */
+    private function toViewData($item)
+    {
+        return [
+            'id' => $this->accessor->isReadable($item, 'id')
+                ? $this->accessor->getValue($item, 'id')
+                : $this->accessor->getValue($item, $this->opts['field']),
+            $this->opts['field'] => $this->accessor->getValue($item, $this->opts['field'])];
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return object|string
+     */
+    private function toNormData($id)
+    {
+        //try to fetch item
+        if ($this->repository) {
+            $item = $this->repository->get($id);
+        } elseif ($this->opts['allow_add']) {
+            $item = new $this->opts['class']();
+            $this->accessor->setValue($item, $this->opts['field'], $id);
+        }
+
+        return $item;
     }
 }
