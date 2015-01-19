@@ -3,6 +3,7 @@
 namespace Alahtarin\Select2Bundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class Select2Transformer
@@ -21,13 +22,20 @@ class Select2ViewTransformer implements DataTransformerInterface
     protected $field;
 
     /**
-     * @param  $repository
-     * @param string                 $field
+     * @var boolean
      */
-    public function __construct($repository, $field)
+    protected $multiple;
+
+    /**
+     * @param object  $repository
+     * @param string  $field
+     * @param boolean $multiple
+     */
+    public function __construct($repository, $field, $multiple)
     {
         $this->repository = $repository;
         $this->field = $field;
+        $this->multiple = $multiple;
     }
 
     /**
@@ -35,24 +43,49 @@ class Select2ViewTransformer implements DataTransformerInterface
      */
     public function transform($object)
     {
-        if ($object == null || is_array($object)) {
+        if ($object == null) {
             return null;
         }
 
-        $getter = 'get' . ucfirst($this->field);
+        $accessor = PropertyAccess::createPropertyAccessor();
 
-        return ['id' => $object->getId(), 'text' => $object->$getter()];
+        if (is_array($object)) {
+            $return = [];
+            foreach ($object as $item) {
+                $return[] = [
+                    'id' => $accessor->getValue($item, 'id'),
+                    $this->field => $accessor->getValue($item, $this->field)];
+            }
+
+            return $return;
+        }
+
+        return [
+            'id' => $accessor->getValue($object, 'id'),
+            $this->field => $accessor->getValue($object, $this->field)
+        ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($id)
+    public function reverseTransform($string)
     {
-        if ($id == null) {
+        if ($string == null) {
             return null;
         }
 
-        return $this->repository->get($id);
+        if ($this->multiple) {
+            $ids = explode(',', $string);
+            $return = [];
+
+            foreach ($ids as $id) {
+                $return[] = $this->repository->get($id);
+            }
+
+            return $return;
+        } else {
+            return $this->repository->get($string);
+        }
     }
 }

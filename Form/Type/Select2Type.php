@@ -3,6 +3,7 @@
 namespace Alahtarin\Select2Bundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -31,8 +32,12 @@ class Select2Type extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['url'] != null && $options['list_data'] != null) {
+            throw new InvalidArgumentException('Parameters data and url can not be specified both');
+        }
+
         $modelTransformer = new Select2ModelTransformer();
-        $viewTransformer = new Select2ViewTransformer($options['repository'], $options['field']);
+        $viewTransformer = new Select2ViewTransformer($options['repository'], $options['field'], $options['multiple']);
 
         $builder->addModelTransformer($modelTransformer);
         $builder->addViewTransformer($viewTransformer);
@@ -49,7 +54,9 @@ class Select2Type extends AbstractType
     {
         $view->vars = array_merge($view->vars, [
             'field' => $options['field'],
-            'url' => $options['url']
+            'url' => $options['url'],
+            'list_data' => $options['list_data'],
+            'multiple' => $options['multiple'],
         ]);
     }
 
@@ -62,7 +69,9 @@ class Select2Type extends AbstractType
             'compound' => false,
             'repository' => null,
             'field' => 'label',
-            'url' => null
+            'url' => null,
+            'list_data' => null,
+            'multiple' => false
         ));
     }
 
