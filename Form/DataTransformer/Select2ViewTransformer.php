@@ -62,7 +62,7 @@ class Select2ViewTransformer implements DataTransformerInterface
     public function reverseTransform($string)
     {
         if ($string == null) {
-            return null;
+            return $this->opts['multiple'] ? [] : null;
         }
 
         if ($this->opts['multiple']) {
