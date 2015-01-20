@@ -75,7 +75,7 @@ class Select2ViewTransformer implements DataTransformerInterface
 
             return $return;
         } else {
-            return $this->repository->$this->toNormData($string);
+            return $this->toNormData($string);
         }
     }
 
