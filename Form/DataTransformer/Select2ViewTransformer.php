@@ -5,7 +5,6 @@ namespace Alahtarin\Select2Bundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Z\Bundle\ApiBundle\Document\Brand;
 
 /**
  * Class Select2Transformer
