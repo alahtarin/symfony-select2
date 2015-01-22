@@ -1,7 +1,7 @@
 {% block select2_widget %}
     {% set field = field|default('label') %}
 
-    <input type="hidden" data-sf-select2 name="{{ full_name }}" class="{{ class|default('') }}" value="{{ multiple ? value|default([])|pluck('id')|join(',') : value.id|default('') }}">
+    <input type="hidden" data-sf-select2 name="{{ full_name }}" class="{{ class|default('') }}" id="{{ id|default('') }}" value="{{ multiple ? value|default([])|pluck('id')|join(',') : value.id|default('') }}">
     <script type="text/javascript">
         $(document).ready(function() {
             $("[name='{{ full_name }}").select2({

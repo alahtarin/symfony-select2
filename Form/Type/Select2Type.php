@@ -46,9 +46,6 @@ class Select2Type extends AbstractType
     /**
      * {@inheritdoc}
      *
-     * @param FormView $view
-     * @param FormInterface $form
-     * @param array $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
