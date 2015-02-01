@@ -7,7 +7,7 @@
             $("[name='{{ full_name }}']").select2({
                 placeholder: "{{ 'select an option'|trans }}",
                 allowClear: {{ required ? 'false' : 'true' }},
-                {% if url or form.parent.vars.select2 and form.parent.vars.select2[name].url %}
+                {% if url or form.parent.vars.select2 is defined and form.parent.vars.select2[name].url is defined %}
                     ajax: {
                         {% if form.parent.vars.select2 is defined %}
                             {% if form.parent.vars.select2[name].url is defined  %}
