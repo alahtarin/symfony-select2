@@ -56,6 +56,7 @@ class Select2Type extends AbstractType
             'multiple' => $options['multiple'],
             'allow_add' => $options['allow_add'],
             'dropdown_class' => $options['dropdown_class'],
+            'placeholder' => $options['placeholder'],
         ]);
     }
 
@@ -65,15 +66,16 @@ class Select2Type extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'compound' => false,
-            'repository' => null,
-            'field' => 'label',
-            'url' => null,
-            'list_data' => null,
-            'multiple' => false,
-            'allow_add' => false,
-            'class' => null,
-            'dropdown_class' => false
+            'compound'          => false,
+            'repository'        => null,
+            'field'             => 'label',
+            'url'               => null,
+            'list_data'         => null,
+            'multiple'          => false,
+            'allow_add'         => false,
+            'class'             => null,
+            'dropdown_class'    => false,
+            'placeholder'       => 'select an option'
         ));
     }
 
