@@ -57,6 +57,7 @@ class Select2Type extends AbstractType
             'allow_add' => $options['allow_add'],
             'dropdown_class' => $options['dropdown_class'],
             'placeholder' => $options['placeholder'],
+            'url_callback' => $options['url_callback']
         ]);
     }
 
@@ -75,7 +76,8 @@ class Select2Type extends AbstractType
             'allow_add'         => false,
             'class'             => null,
             'dropdown_class'    => false,
-            'placeholder'       => 'select an option'
+            'placeholder'       => 'select an option',
+            'url_callback'      => null
         ));
     }
 

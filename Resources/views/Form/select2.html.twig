@@ -7,18 +7,17 @@
             $("[name='{{ full_name }}']").select2({
                 placeholder: "{{ placeholder|trans }}",
                 allowClear: {{ required ? 'false' : 'true' }},
-                {% if url or form.parent.vars.select2 is defined and form.parent.vars.select2[name].url is defined %}
+                {% if url or url_callback or form.parent.vars.select2 is defined and form.parent.vars.select2[name].url is defined %}
                     ajax: {
                         {% if form.parent.vars.select2 is defined %}
                             {% if form.parent.vars.select2[name].url is defined  %}
                                 {% set url = form.parent.vars.select2[name].url  %}
                             {% endif %}
                         {% endif %}
-                        url     : '{{ url }}',
+                        url     : {{ url ? "'#{url}'" : url_callback }},
                         dataType: 'json',
                         quietMillis: 200,
                         data: function (term, page) {
-
                             return {
                                 q: term
                             };
