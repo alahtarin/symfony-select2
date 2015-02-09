@@ -18,11 +18,17 @@
                         dataType: 'json',
                         quietMillis: 200,
                         data: function (term, page) {
+
                             return {
                                 q: term
                             };
                         },
                         results: function (data, page, query) {
+                            if (typeof data === 'object') {
+                                data = $.map(data, function (value) {
+                                    return [value];
+                                });
+                            }
                             return {
                                 results: data
                             };
