@@ -14,7 +14,7 @@
                                 {% set url = form.parent.vars.select2[name].url  %}
                             {% endif %}
                         {% endif %}
-                        url     : {{ url ? "'#{url}'" : url_callback }},
+                        url     : {% if url %} {{ url|json_encode|raw }} {% else %} {{ url_callback }} {% endif %},
                         dataType: 'json',
                         quietMillis: 200,
                         data: function (term, page) {
@@ -51,15 +51,17 @@
                 formatSelection: function(ob, container) {
                     return ob.{{ field }}
                 },
-                {#{% if value is iterable or value.id is defined %}#}
-                    initSelection: function(el, cb) {
-                        var val = JSON.parse($(el).val());
-                        if (val) {
-                            $(el).val(val.id)
-                            cb(val);
-                        }
+                initSelection: function(el, cb) {
+                    var val = JSON.parse($(el).val());
+                    if (val) {
+                        $(el).val(val.id)
+                        cb(val);
                     }
-                {#{% endif %}#}
+                },
+                minimumInputLength: {{ minimumInputLength }},
+                formatInputTooShort: function () {
+                    return "{{ 'Enter minimum %count% characters'|trans({'%count%': minimumInputLength}) }}";
+                },
             });
         });
     </script>

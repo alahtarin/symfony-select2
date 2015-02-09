@@ -50,14 +50,15 @@ class Select2Type extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars = array_merge($view->vars, [
-            'field' => $options['field'],
-            'url' => $options['url'],
-            'list_data' => $options['list_data'],
-            'multiple' => $options['multiple'],
-            'allow_add' => $options['allow_add'],
-            'dropdown_class' => $options['dropdown_class'],
-            'placeholder' => $options['placeholder'],
-            'url_callback' => $options['url_callback']
+            'field'                 => $options['field'],
+            'url'                   => $options['url'],
+            'list_data'             => $options['list_data'],
+            'multiple'              => $options['multiple'],
+            'allow_add'             => $options['allow_add'],
+            'dropdown_class'        => $options['dropdown_class'],
+            'placeholder'           => $options['placeholder'],
+            'url_callback'          => $options['url_callback'],
+            'minimumInputLength'    => $options['minimumInputLength'],
         ]);
     }
 
@@ -66,19 +67,20 @@ class Select2Type extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'compound'          => false,
-            'repository'        => null,
-            'field'             => 'label',
-            'url'               => null,
-            'list_data'         => null,
-            'multiple'          => false,
-            'allow_add'         => false,
-            'class'             => null,
-            'dropdown_class'    => false,
-            'placeholder'       => 'select an option',
-            'url_callback'      => null
-        ));
+        $resolver->setDefaults([
+            'compound'              => false,
+            'repository'            => null,
+            'field'                 => 'label',
+            'url'                   => null,
+            'list_data'             => null,
+            'multiple'              => false,
+            'allow_add'             => false,
+            'class'                 => null,
+            'dropdown_class'        => false,
+            'placeholder'           => 'select an option',
+            'url_callback'          => null,
+            'minimumInputLength'    => 0,
+        ]);
     }
 
     /**
