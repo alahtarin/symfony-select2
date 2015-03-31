@@ -22,13 +22,13 @@
                             };
                         },
                         results: function (data, page, query) {
-                            if (typeof data === 'object') {
-                                data = $.map(data, function (value) {
+                            if (typeof data._elements === 'object') {
+                                data._elements = $.map(data._elements, function (value) {
                                     return [value];
                                 });
                             }
                             return {
-                                results: data
+                                results: data._elements
                             };
                         }
                     },
