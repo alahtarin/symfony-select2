@@ -43,7 +43,7 @@ class Select2ViewTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (is_array($object)) {
+        if (is_array($object) || get_class($object) == 'Doctrine\ODM\MongoDB\PersistentCollection') {
             $return = [];
             foreach ($object as $item) {
                 $return[] = $this->toViewData($item);
